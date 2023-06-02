@@ -31,7 +31,9 @@ public class LivroController {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public String insert(@RequestParam("titulo") String titulo) {
+    public String insert(
+        @RequestParam("titulo") String titulo, 
+        @RequestParam("isbn") int isbn) {
         Livro livro = new Livro();
         livro.setTitulo(titulo);
 
@@ -73,6 +75,13 @@ public class LivroController {
             model.addAttribute("livro", livro.get());
             return "/livro/delete";
         }
+
+        return "redirect:/livro/list";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam("id") int id) {
+        livroRepo.deleteById(id);
 
         return "redirect:/livro/list";
     }
