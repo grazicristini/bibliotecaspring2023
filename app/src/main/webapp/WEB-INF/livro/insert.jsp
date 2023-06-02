@@ -13,7 +13,9 @@
                 <div class="form-group">
                     <label for="titulo">Título:</label>
                     <input type="text" name="titulo" class="form-control" />
-                    <label for="isbn">Código do Livro</label>
+                </div>
+                <div>
+                    <label for="isbn">ISBN</label>
                     <input type="text" name="isbn" class="form-control" />              
                 </div>
                 <br />
