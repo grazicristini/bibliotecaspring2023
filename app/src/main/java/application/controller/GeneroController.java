@@ -1,10 +1,15 @@
 package application.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import application.model.Genero;
 import application.model.GeneroRepository;
 
 @Controller
@@ -24,4 +29,37 @@ public class GeneroController {
         return "/genero/insert";
     }
 
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public String insert(
+        @RequestParam("nome") String nome) {
+        Genero genero = new Genero();
+        genero.setNome(nome);
+
+        generoRepo.save(genero);
+        return "redirect:/genero/list";
+    }
+
+    @RequestMapping("/update")
+    public String update(Model model, @RequestParam("nome") String nome) {
+        Optional<Genero> genero = generoRepo.findById(null);
+
+        if(genero.isPresent()) {
+            model.addAttribute("genero", genero.get());
+            return "/genero/update";
+        }
+
+        return "redirect:/genero/list";
+    }
+
+    @RequestMapping("/delete")
+    public String delete(Model model, @RequestParam("nome") String nome) {
+        Optional<Genero> genero = generoRepo.findById(null);
+
+        if(genero.isPresent()) {
+            model.addAttribute("genero", genero.get());
+            return "/genero/delete";
+        }
+
+        return "redirect:/genero/list";
+    }
 }
