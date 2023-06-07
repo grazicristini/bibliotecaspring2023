@@ -11,6 +11,7 @@
             <h1>Remover Gênero</h1>
             <p>Tem certeza que deseja remover esse gênero ${genero.nome} ?</p>
             <form action="/genero/delete" method="post">
+                <input type="hidden" name="id" value="${genero.id}" />
                 <br />
                 <a href="/genero/list" class="btn btn-primary" >Voltar</a>
                 <button type="submit" class="btn btn-danger">Excluir</button>

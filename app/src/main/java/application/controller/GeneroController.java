@@ -20,7 +20,7 @@ public class GeneroController {
 
     @RequestMapping("/list")
     public String list(Model model) { 
-        model.addAttribute("genero", generoRepo.findAll());
+        model.addAttribute("generos", generoRepo.findAll());
         return "/genero/list";
     }
 
@@ -30,8 +30,7 @@ public class GeneroController {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public String insert(
-        @RequestParam("nome") String nome) {
+    public String insert(@RequestParam("nome") String nome) {
         Genero genero = new Genero();
         genero.setNome(nome);
 
@@ -40,8 +39,8 @@ public class GeneroController {
     }
 
     @RequestMapping("/update")
-    public String update(Model model, @RequestParam("nome") String nome) {
-        Optional<Genero> genero = generoRepo.findById(null);
+    public String update(Model model, @RequestParam("id") int id) {
+        Optional<Genero> genero = generoRepo.findById(id);
 
         if(genero.isPresent()) {
             model.addAttribute("genero", genero.get());
@@ -51,14 +50,34 @@ public class GeneroController {
         return "redirect:/genero/list";
     }
 
-    @RequestMapping("/delete")
-    public String delete(Model model, @RequestParam("nome") String nome) {
-        Optional<Genero> genero = generoRepo.findById(null);
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(Model model, @RequestParam("id") int id, @RequestParam("nome") String nome) {
+        Optional<Genero> genero = generoRepo.findById(id);
 
+        if(genero.isPresent()) {
+            genero.get().setNome(nome);
+
+            generoRepo.save(genero.get());
+        }
+
+        return "redirect:/genero/list";
+    }
+
+    @RequestMapping("/delete")
+    public String delete(Model model, @RequestParam("id") int id) {
+        Optional<Genero> genero = generoRepo.findById(id);
+        
         if(genero.isPresent()) {
             model.addAttribute("genero", genero.get());
             return "/genero/delete";
         }
+
+        return "redirect:/genero/list";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam("id") int id) {
+        generoRepo.deleteById(id);
 
         return "redirect:/genero/list";
     }
